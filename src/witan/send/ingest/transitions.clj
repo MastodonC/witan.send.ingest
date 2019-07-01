@@ -1,5 +1,7 @@
 (ns witan.send.ingest.transitions
-  (:require [clojure.set :as cs]
+  (:require [clojure.data.csv :as csv]
+            [clojure.java.io :as io]
+            [clojure.set :as cs]
             [net.cgrand.xforms :as x]
             [net.cgrand.xforms.rfs :as rfs]
             [witan.send.constants :as const]))
@@ -61,3 +63,12 @@
             (comp
              (mapcat (partial create-transitions min-cal-year max-cal-year lookup-years)))
             census)))
+
+(defn ->csv [prefix transitions]
+  (with-open [w (io/writer (str prefix "transitions.csv"))]
+    (let [header [:calendar-year :setting-1 :need-1 :academic-year-1 :setting-2 :need-2 :academic-year-2]]
+      (csv/write-csv
+       w
+       (into [(mapv name header)]
+             (map (apply juxt header))
+             transitions)))))
