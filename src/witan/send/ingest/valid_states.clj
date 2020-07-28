@@ -10,7 +10,11 @@
        w
        (into [(mapv name header)]
              (comp
-              (map (fn [m] (update m :needs #(s/join "," %))))
-              (map (fn [m] (update m :setting->setting #(s/join "," %))))
+              (map (fn [m] (update m :needs #(if (s/includes? % ",")
+                                               %
+                                               (s/join "," %)))))
+              (map (fn [m] (update m :setting->setting #(if (s/includes? % ",")
+                                                          %
+                                                          (s/join "," %)))))
               (map (apply juxt header)))
              valid-states)))))
