@@ -28,9 +28,17 @@
          [{:tab-name tab-name
            :data (transitions-data transitions)}])))
 
-(defn validation-report [census valid-states costs]
+(defn label-unrecognised [k lookup]
+  (comp
+   (filter #(nil? (some #{(k %)} lookup)))
+   (map #(assoc % :anomalies (str (name k) " " (k %) " not recognised")))
+   (map (juxt :anon-ref :calendar-year :setting-1 :need-1 :academic-year-1 :setting-2 :need-2 :academic-year-2 :anomalies))))
+
+(defn validation-report [census valid-states costs settings needs ays]
   (let [transitions (it/transitions census)
-        header ["anon-ref" "calendar-year" "setting-1" "need-1" "academic-year-1" "setting-2" "need-2" "academic-year-2" "anomalies"]]
+        header ["anon-ref" "calendar-year" "setting-1" "need-1" "academic-year-1" "setting-2" "need-2" "academic-year-2" "anomalies"]
+        settings (conj settings "NONSEND")
+        needs (conj needs "NONSEND")]
     (workbook
      [{:tab-name "Invalid Transitions"
        :data (into [header]
@@ -66,4 +74,13 @@
                         (sort-by (juxt first second))))}
       {:tab-name "Records with No Cost Defined"
        :data (transitions-data
-              (v/records-with-missing-costs transitions costs))}])))
+              (v/records-with-missing-costs transitions costs))}
+      {:tab-name "Unrecognised Settings"
+       :data (concat (into [header] (label-unrecognised :setting-1 settings) transitions)
+                     (into [] (label-unrecognised :setting-2 settings) transitions))}
+      {:tab-name "Unrecognised Needs"
+       :data (concat (into [header] (label-unrecognised :need-1 needs) transitions)
+                     (into [] (label-unrecognised :need-2 needs) transitions))}
+      {:tab-name "Academic Year Too High or Low"
+       :data (concat (into [header] (label-unrecognised :academic-year-1 ays) transitions)
+                     (into [] (label-unrecognised :academic-year-2 ays) transitions))}])))
