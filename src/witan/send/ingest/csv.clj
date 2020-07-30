@@ -30,3 +30,15 @@
         (throw (ex-info (format "Failed to parse supplied value '%s'" x)
                         {:value x}))))
 
+(defn ->costs [output-prefix costs]
+  (with-open [w (io/writer (str output-prefix "costs.csv"))]
+    (let [header [:need :setting :cost]]
+      (csv/write-csv
+       w
+       (into [(mapv name header)]
+             (comp
+              (map (fn [m] (update m :need str)))
+              (map (fn [m] (update m :setting str)))
+              (map (fn [m] (update m :cost ->double)))
+              (map (apply juxt header)))
+             costs)))))
