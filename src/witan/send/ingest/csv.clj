@@ -3,7 +3,7 @@
             [clojure.java.io :as io]
             [clojure.string :as s]))
 
-(defn ->csv [output-prefix valid-states]
+(defn ->valid-states [output-prefix valid-states]
   (with-open [w (io/writer (str output-prefix "valid-states.csv"))]
     (let [header [:setting :setting-group :min-academic-year :max-academic-year :needs :setting->setting]]
       (csv/write-csv
