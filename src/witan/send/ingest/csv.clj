@@ -18,3 +18,15 @@
                                                           (s/join "," %)))))
               (map (apply juxt header)))
              valid-states)))))
+
+(defn ->double [x]
+  (cond (double? x)
+        x
+        (int? x)
+        (double x)
+        (string? x)
+        (Double/valueOf x)
+        :else
+        (throw (ex-info (format "Failed to parse supplied value '%s'" x)
+                        {:value x}))))
+
