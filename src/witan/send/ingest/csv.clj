@@ -42,3 +42,15 @@
               (map (fn [m] (update m :cost ->double)))
               (map (apply juxt header)))
              costs)))))
+
+(defn ->population [output-prefix population]
+  (with-open [w (io/writer (str output-prefix "population.csv"))]
+    (let [header [:calendar-year :academic-year :population]]
+      (csv/write-csv w
+                     (into [(mapv name header)]
+                           (comp
+                            (map (fn [m] (update m :calendar-year int)))
+                            (map (fn [m] (update m :academic-year int)))
+                            (map (fn [m] (update m :population ->double)))
+                            (map (apply juxt header)))
+                           (sort-by (juxt :calendar-year :academic-year) population))))))
