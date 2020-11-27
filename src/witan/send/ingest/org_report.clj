@@ -61,9 +61,9 @@
    (h1 "Setting Mappings")
 
    (table
-    {:escc "ESCC Name" :mc "MC Name"}
-    [:escc :mc]
-    (map (fn [[k v]] {:escc k :mc v}) settings-map))
+    {:la "LA Name" :mc "MC Name"}
+    [:la :mc]
+    (map (fn [[k v]] {:la k :mc v}) settings-map))
 
    (h1 "SEND population per year")
    (table
