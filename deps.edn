@@ -1,11 +1,11 @@
 {:paths ["resources" "src"]
  :deps  {org.clojure/clojure            {:mvn/version "1.10.1"}
          org.clojure/math.combinatorics {:mvn/version "0.1.5"}
-         cljplot                        {:mvn/version "0.0.1-SNAPSHOT"}
+         cljplot/cljplot                {:mvn/version "0.0.1-SNAPSHOT"}
          dk.ative/docjure               {:mvn/version "1.13.0"}
          net.cgrand/xforms              {:mvn/version "0.19.0"}
-         tick                           {:mvn/version "0.4.14-alpha"}
-         witan.send                     {:local/root "../witan.send"}}
+         tick/tick                      {:mvn/version "0.4.14-alpha"}
+         witan.send/witan.send          {:local/root "../witan.send"}}
  :aliases
  {:test {:extra-paths ["test"]
          :extra-deps  {org.clojure/test.check {:mvn/version "0.10.0-RC1"}}}
