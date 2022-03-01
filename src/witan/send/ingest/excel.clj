@@ -1,5 +1,5 @@
 (ns witan.send.ingest.excel
-  (:require [dk.ative.docjure.spreadsheet :as ss]))
+  (:require [kixi.large.legacy :as ss]))
 
 (defn read-row [^org.apache.poi.ss.usermodel.Row row]
   (map ss/read-cell (ss/cell-seq row)))
