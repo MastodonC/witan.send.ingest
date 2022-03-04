@@ -1,7 +1,7 @@
 (ns witan.send.ingest.excel-report
   (:require [witan.send.ingest.transitions :as it]
             [witan.send.ingest.validation :as v]
-            [dk.ative.docjure.spreadsheet :as xl]))
+            [kixi.large.legacy :as xl]))
 
 (defn workbook
   "Given a map of :tab-name and data create a workboo with all the right
